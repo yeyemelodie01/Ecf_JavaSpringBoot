@@ -1,0 +1,41 @@
+<header th:fragment="menuPrincipal" class="text-gray-600 body-font">
+	<div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+		<a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+			<span class="ml-3 text-xl">PayYouPayMe</span>
+		</a>
+		<nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+			<ul class="flex">
+				<li>
+					<a class="mr-5 hover:text-gray-900" href="/">Home</a>
+				</li>
+				<li th:if="${#authorization.expression('hasRole(''USER'')')}">
+					<a class="mr-5 hover:text-gray-900" href="/me/user/">Profile</a>
+				</li>
+				<li th:if="${#authorization.expression('hasRole(''USER'')')}">
+					<a class="mr-5 hover:text-gray-900" href="/contact/">Contact</a>
+				</li>
+				<li th:if="${#authorization.expression('hasRole(''USER'')')}">
+					<a class="mr-5 hover:text-gray-900" href="/transaction/">Transaction</a>
+				</li>
+				<li th:if="${#authorization.expression('hasRole(''USER'')')}">
+					<a class="mr-5 hover:text-gray-900" href="/transfert/">Transfert</a>
+				</li>
+				<li th:if="${#authorization.expression('hasRole(''USER'')')}">
+					<a class="mr-5 hover:text-gray-900" href="/message/">Message</a>
+				</li>
+				<li th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+					<a class="mr-5 hover:text-gray-900" href="/admin/">Dashboard</a>
+				</li>
+				<li th:if="${#authorization.expression('hasRole(''SUSPEND'')')}">
+					<a class="mr-5 hover:text-gray-900" href="/reactive">Se réactiver</a>
+				</li>
+				<li th:if="${#authorization.expression('!isAuthenticated()')}">
+					<a class="mr-5 hover:text-gray-900" href="/login">Login</a>
+				</li>
+				<li th:if="${#authorization.expression('isAuthenticated()')}">
+					<a class="mr-5 hover:text-gray-900" href="/logout">Se déconnecter</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</header>

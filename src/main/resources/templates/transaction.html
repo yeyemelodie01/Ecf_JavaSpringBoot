@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/head :: head">
+	<meta charset="UTF-8">
+	<title>Accueil</title>
+</head>
+<body>
+	<header th:replace="~{fragments/menu :: menuPrincipal}"></header>
+
+	<h1 class="text-3xl font-bold text-center mb-4">Transaction</h1>
+
+	<div th:text="'Solde : ' + ${utilisateur.balance}" class="text-center text-xl"></div>
+
+	<h2 class="text-2xl font-bold text-center mb-4">Faire une transaction</h2>
+	<div class="flex justify-center mb-6">
+		<form th:action="@{/transaction/createtransaction}" method="POST"class="flex flex-col">
+			<select name="receiver" class="mb-4 w-48 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+				<option th:each="contacttoselect : ${utilisateur.contact}"
+						th:value="${contacttoselect.username}"
+						th:text="${contacttoselect.username}">
+			</select>
+			<input type="text" name="content" value="message" required class="mb-4 w-48 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+			<input type="number" name="amount" min="0" value="0" required class="mb-4 w-48 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+
+			<input type="submit" value="Creation transaction" class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+		</form>
+	</div>
+	<div class="flex justify-center">
+		<span th:if="${isSuccess}" th:text="${success}" class="text-green-500"></span>
+		<span th:unless="${isSuccess}" th:text="${error}" class="text-red-500"></span>
+	</div>
+
+	<h2 class="text-2xl font-bold text-center mb-4">Liste transactions envoyées</h2>
+	<div class="flex justify-center mb-6">
+		<table class="border-collapse border border-gray-400">
+			<tr>
+				<th class="border border-gray-300 p-4">Identifiant</th>
+				<th class="border border-gray-300 p-4">Montant</th>
+				<th class="border border-gray-300 p-4">Message</th>
+				<th class="border border-gray-300 p-4">Date</th>
+				<th class="border border-gray-300 p-4">Destinataire</th>
+				<th class="border border-gray-300 p-4">Signaler</th>
+			</tr>
+
+			<tr th:each="transaction : ${utilisateur.transactionSent}">
+				<td class="border border-gray-300 p-4" th:text="${transaction.id}"></td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.amount}"></td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.messageContent}"></td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.date}"></td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.receiver.username}"></td>
+				<td class="border border-gray-300 p-4">
+					<span th:if="!${transaction.report}">
+						<form th:action="@{'/transaction/report?id=' + ${transaction.id}}"
+							  method="POST">
+							<input type="submit" value="Signaler" class="text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded text-lg">
+						</form>
+					</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

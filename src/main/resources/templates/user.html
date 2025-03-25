@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/head :: head">
+	<meta charset="UTF-8">
+	<title>Accueil</title>
+</head>
+<body>
+	<header th:replace="~{fragments/menu :: menuPrincipal}"></header>
+
+	<h1 class="text-3xl font-bold text-center mb-4"> Profile de <span th:text="${userToDisplay.username}"></span></h1>
+
+	<h3 class="text-xl font-bold text-center mb-4">Liste messages envoyés</h3>
+	<ul class="flex flex-col items-center mb-6">
+		<li th:each="message : ${userToDisplay.messageSent}">
+			<span th:text="${message.content} + ', ' + ${message.date}"></span>
+		</li>
+	</ul>
+
+
+	<h3 class="text-xl font-bold text-center mb-4">Liste Contact</h3>
+	<div class="flex justify-center mb-6">
+		<table class="border-collapse border border-gray-400">
+			<tr>
+				<th class="border border-gray-300 p-4">ID</th>
+				<th class="border border-gray-300 p-4">firstname</th>
+				<th class="border border-gray-300 p-4">lastname</th>
+				<th class="border border-gray-300 p-4">email</th>
+			</tr>
+			<tr th:each="utilisateur : ${userToDisplay.contact}">
+				<td class="border border-gray-300 p-4" th:text="${utilisateur.id}"></td>
+				<td class="border border-gray-300 p-4" th:text="${utilisateur.firstName}"></td>
+				<td class="border border-gray-300 p-4" th:text="${utilisateur.lastName}"></td>
+				<td class="border border-gray-300 p-4" th:text="${utilisateur.email}"></td>
+			</tr>
+		</table>
+	</div>
+
+	<h2 class="text-2xl font-bold text-center mb-4">Liste des transactions envoyées</h2>
+	<div class="flex justify-center mb-6">
+		<table class="border-collapse border border-gray-400">
+			<tr>
+				<th class="border border-gray-300 p-4">Identifiant</th>
+				<th class="border border-gray-300 p-4">Montant</th>
+				<th class="border border-gray-300 p-4">Message</th>
+				<th class="border border-gray-300 p-4">Date</th>
+				<th class="border border-gray-300 p-4">Destinataire</th>
+			</tr>
+			<tr th:each="transaction : ${userToDisplay.transactionSent}">
+				<td class="border border-gray-300 p-4" th:text="${transaction.id}"></td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.amount}"></td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.messageContent}"></td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.date}"></td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.receiver.username}"></td>
+			</tr>
+		</table>
+	</div>
+
+	<h2 class="text-2xl font-bold text-center mb-4">Modification User</h2>
+	<div class="flex justify-center mb-6">
+		<form th:action="@{/me/user/saveuser}" method="POST"
+			 th:object="${userToDisplay}"
+			  class="flex flex-col"
+		>
+			<input type="hidden" name="id" required th:field="*{id}" class="mb-4 w-48 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+			<input type="text" name="lastname" required th:field="*{lastName}" class="mb-4 w-48 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+			<input type="text" name="fistname" required th:field="*{firstName}" class="mb-4 w-48 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+			<input type="text" name="email" required th:field="*{email}" class="mb-4 w-48 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+			<input type="submit" value="Modifier" class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+		</form>
+	</div>
+	<div class="flex justify-center mb-6">
+		<form th:action="@{/me/user/suspendcompte}" method="POST">
+			<input type="submit" value="Suspendre compte?" class="text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded text-lg">
+		</form>
+	</div>
+</body>
+</html>

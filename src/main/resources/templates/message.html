@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/head :: head">
+	<meta charset="UTF-8">
+	<title>Accueil</title>
+</head>
+<body>
+<header th:replace="~{fragments/menu :: menuPrincipal}"></header>
+
+<h1 class="text-3xl font-bold text-center mb-4">Messages</h1>
+
+<ul class="flex flex-col items-center mb-6">
+ 	<li th:each="message : ${messages}" class="flex flex-col mb-4">
+		<span th:text="'Message envoyé : ' + ${message.content}"></span>
+		<span th:text="'Reponse : ' + ${message.answer}"></span>
+	</li>
+ </ul>
+<div class="flex justify-center mb-6">
+	<form th:action="@{/message/addmessage}" method="POST">
+		<input type="text" name="messagecontent" class="w-48 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+		<input type="submit" value=" contact" class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+	</form>
+</div>
+</body>
+</html>

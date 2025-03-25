@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/head :: head">
+	<meta charset="UTF-8">
+	<title>Accueil</title>
+</head>
+<body>
+	<header th:replace="~{fragments/menu :: menuPrincipal}"></header>
+
+	<h1 class="text-3xl font-bold text-center mb-4">Admin dashboard</h1>
+
+	<!------Message-------->
+	<h2 class="text-2xl font-bold text-center mb-4">MESSAGES</h2>
+	<div class="flex justify-center mb-6">
+		<table class="border-collapse border border-gray-400">
+			<tr>
+				<th class="border border-gray-300 p-4">Identifiants</th>
+				<th class="border border-gray-300 p-4">Contenue</th>
+				<th class="border border-gray-300 p-4">Date</th>
+				<th class="border border-gray-300 p-4">Utilisateur name</th>
+				<th class="border border-gray-300 p-4">Reponse</th>
+			</tr>
+			<tr th:each="message : ${messages}">
+				<td class="border border-gray-300 p-4" th:text="${message.id}"></td>
+				<td class="border border-gray-300 p-4" th:text="${message.content}"></td>
+				<td class="border border-gray-300 p-4" th:text="${message.date}"></td>
+				<td class="border border-gray-300 p-4" th:text="${message.utilisateur.username}"></td>
+				<td class="border border-gray-300 p-4">
+					<span th:if="${ message.answer == null }">
+						<form th:action="@{'/admin/reponse?id=' + ${message.id}}"
+							method="POST">
+							<input type="text" name="content" class="w-48 bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+							<input type="submit" value="Repondre au message" class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+						</form>
+					</span>
+					<span th:unless="${ message.answer == null }"> <span
+						th:text="${message.answer}"></span>
+					</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<!------Transaction-------->
+	<h2 class="text-2xl font-bold text-center mb-4">TRANSACTIONS</h2>
+	<div class="flex justify-center mb-6">
+		<table class="border-collapse border border-gray-400">
+			<tr>
+				<th class="border border-gray-300 p-4">Identifiant</th>
+				<th class="border border-gray-300 p-4">Contenue Message</th>
+				<th class="border border-gray-300 p-4">Date</th>
+				<th class="border border-gray-300 p-4">Expéditeur</th>
+				<th class="border border-gray-300 p-4">Destinataire</th>
+				<th class="border border-gray-300 p-4">Est validé?</th>
+				<th class="border border-gray-300 p-4">Valider</th>
+				<th class="border border-gray-300 p-4">Rejeter</th>
+				<th class="border border-gray-300 p-4">Est signaler ?</th>
+			</tr>
+			<tr th:each="transaction : ${transactions}">
+				<td class="border border-gray-300 p-4" th:text="${transaction.id}"></td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.messageContent}"></td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.date}"></td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.sender.username}"></td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.receiver.username}"></td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.validate}"></td>
+				<td class="border border-gray-300 p-4">
+					<span th:if="${!transaction.validate}">
+						<form th:action="@{'/admin/validatetransaction?id=' + ${transaction.id}}"
+							method="POST">
+							<input type="submit" value="Valider" class="text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">
+						</form>
+					</span>
+				</td>
+				<td class="border border-gray-300 p-4">
+					<span th:if="${!transaction.reject && !transaction.validate}">
+						<form th:action="@{'/admin/rejecttransaction?id=' + ${transaction.id}}"
+							method="POST">
+							<input type="submit" value="Rejeter" class="text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded text-lg">
+						</form>
+					</span>
+				</td>
+				<td class="border border-gray-300 p-4" th:text="${transaction.report}"></td>
+			</tr>
+		</table>
+	</div>
+
+	<!------Utilisateur-------->
+	<h2 class="text-2xl font-bold text-center mb-4">Utilisateur</h2>
+	<div class="flex justify-center mb-6">
+		<table class="border-collapse border border-gray-400">
+			<tr>
+				<th class="border border-gray-300 p-4">Identifiant</th>
+				<th class="border border-gray-300 p-4">Nom d'utilisateur</th>
+				<th class="border border-gray-300 p-4">Solde</th>
+				<th class="border border-gray-300 p-4">Est actif?</th>
+				<th class="border border-gray-300 p-4">Désactiver</th>
+				<th class="border border-gray-300 p-4">Confirmer statut</th>
+			</tr>
+			<tr th:each="user : ${utilisateurs}">
+				<td class="border border-gray-300 p-4" th:text="${user.id}"></td>
+				<td class="border border-gray-300 p-4" th:text="${user.username}"></td>
+				<td class="border border-gray-300 p-4" th:text="${user.balance}"></td>
+				<td class="border border-gray-300 p-4" th:text="${user.active}"></td>
+				<td class="border border-gray-300 p-4">
+					<span th:if="${user.active}">
+						<form th:action="@{'/admin/desactiveruser?id=' + ${user.id}}"
+							method="POST">
+							<input type="submit" value="Desactiver" class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+						</form>
+					</span>
+				</td>
+				<td class="border border-gray-300 p-4">
+					<span th:if="${!user.confirm}">
+						<form th:action="@{'/admin/confirmuser?id=' + ${user.id}}"
+							method="POST">
+							<input type="submit" value="Confirmer" class="text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+						</form>
+					</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
