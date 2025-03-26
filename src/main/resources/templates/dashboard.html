@@ -82,6 +82,10 @@
 				<td class="border border-gray-300 p-4" th:text="${transaction.report}"></td>
 			</tr>
 		</table>
+		<div class="flex justify-center">
+			<span th:if="${isSuccess}" th:text="${success}" class="text-green-500"></span>
+			<span th:unless="${isSuccess}" th:text="${error}" class="text-red-500"></span>
+		</div>
 	</div>
 
 	<!------Utilisateur-------->

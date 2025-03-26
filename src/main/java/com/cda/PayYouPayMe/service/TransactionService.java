@@ -84,11 +84,11 @@ public class TransactionService {
 		
 	}
 
-	public String rejectTransaction(int id) {
+	public Boolean rejectTransaction(int id) {
 		Transaction transactionToReject = transactionRepository.findById(id).get();
 		transactionToReject.setReject(true);
 		transactionToReject.setValidate(true);
-		
+
 		Utilisateur sender = transactionToReject.getSender();
 		Utilisateur receiver = transactionToReject.getReceiver();
 
@@ -97,16 +97,21 @@ public class TransactionService {
 			if (receiver.getBalance() > transactionToReject.getAmount()) {
 				receiver.setBalance(receiver.getBalance() - transactionToReject.getAmount());
 			} else {
-				return "Solde insuffisant pour annuler la transaction.";
+				transactionToReject.setReject(false);
+				transactionToReject.setValidate(false);
+				utilisateurService.updateUser(receiver);
+				utilisateurService.updateUser(sender);
+				transactionRepository.save(transactionToReject);
+				return false;
 			}
 
 			sender.setBalance(sender.getBalance() + transactionToReject.getAmount());
 			utilisateurService.updateUser(receiver);
 			utilisateurService.updateUser(sender);
 			transactionRepository.save(transactionToReject);
-			return "Transaction annulée avec succès.";
+			return true;
 		}
-		return "";
+		return true;
 	}
 
 	public void reportTransaction(int id) {

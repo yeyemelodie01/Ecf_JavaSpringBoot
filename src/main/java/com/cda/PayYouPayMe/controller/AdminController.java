@@ -34,6 +34,7 @@ public class AdminController {
 	public String getAdminPage(Model model) {
         logger.info("Connect to allDatas!");
 
+		model.addAttribute("isSuccess", false);
 		model.addAttribute("messages", messageService.getAllMessages());
 		model.addAttribute("transactions", transactionService.getAllTransactions());
 		model.addAttribute("utilisateurs", utilisateurService.getAllUtilisateurs());
@@ -81,10 +82,19 @@ public class AdminController {
 	
 	@PostMapping("/rejecttransaction")
 	public String rejeterTransaction(Model model, @RequestParam int id) {
-		transactionService.rejectTransaction(id);
+		Boolean resultReject = transactionService.rejectTransaction(id);
+
+		if (!resultReject) {
+			model.addAttribute("error", "Erreur lors de l'annulation de la transaction.");
+		} else {
+			model.addAttribute("isSuccess", true);
+			model.addAttribute("success", "Transaction annulée avec succès.");
+		}
+
 		model.addAttribute("messages", messageService.getAllMessages());
 		model.addAttribute("transactions", transactionService.getAllTransactions());
 		model.addAttribute("utilisateurs", utilisateurService.getAllUtilisateurs());
+
 		return "dashboard";
 	}
 }

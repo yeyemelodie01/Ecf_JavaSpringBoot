@@ -20,3 +20,5 @@
 20. Ajout du fichier sql afin d'initialiser la base de donnée avec les données présentes dans le fichier dataInitializer. Suppression du fichier dataInitializer et du package.
 21. Ajout du css sur toutes les pages.
 22. Ajout de la visibilité du formulaire d'inscription si l'utilisateur est null.
+23. Test de la méthode rejectTransaction changement du type de String en boolean.
+24. Ajout dans AdminController l'affichage des messages d'erreur en fonction du retour de la méthode.
