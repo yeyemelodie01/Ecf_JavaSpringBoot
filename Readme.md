@@ -22,3 +22,4 @@
 22. Ajout de la visibilité du formulaire d'inscription si l'utilisateur est null.
 23. Test de la méthode rejectTransaction changement du type de String en boolean.
 24. Ajout dans AdminController l'affichage des messages d'erreur en fonction du retour de la méthode.
+25. Modification de dashboard.html afin de pouvoir afficher les messages d'erreur.
