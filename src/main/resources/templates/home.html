@@ -6,7 +6,7 @@
 </head>
 <body>
 <header th:replace="fragments/menu :: menuPrincipal"></header>
-<h1 class="text-3xl font-bold text-center">Bienvenue <span th:text="${utilisateur.username}"></span> sur l'application PayYouPayMe</h1>
+<h1 class="text-3xl font-bold text-center">Bienvenue <span th:if="!utilisateur" th:text="${utilisateur.username}"></span> sur l'application PayYouPayMe</h1>
 
 <div th:if="${utilisateur == null}" class="mt-6 flex flex-col items-center">
 	<h2 class="text-2xl font-bold text-center mb-4">Inscrivez-vous</h2>
